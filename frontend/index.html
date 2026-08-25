@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Library Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <h1>📚 Library</h1>
+
+        <nav>
+            <button onclick="showSection('dashboard')">🏠 Dashboard</button>
+            <button onclick="showSection('books')">📚 Books</button>
+            <button onclick="showSection('members')">👥 Members</button>
+            <button onclick="showSection('authors')">✍️ Authors</button>
+            <button onclick="showSection('history')">📜 Borrowing History</button>
+        </nav>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Header -->
+        <header class="topbar">
+            <div>
+                <h2>Library Management System</h2>
+                <p>Manage books, members and borrowing records</p>
+            </div>
+        </header>
+
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="section active">
+
+            <h2>Dashboard</h2>
+
+            <div class="cards">
+
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <div>
+                        <h3 id="bookCount">0</h3>
+                        <p>Total Books</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">👥</div>
+                    <div>
+                        <h3 id="memberCount">0</h3>
+                        <p>Total Members</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">✍️</div>
+                    <div>
+                        <h3 id="authorCount">0</h3>
+                        <p>Total Authors</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📖</div>
+                    <div>
+                        <h3 id="issuedCount">0</h3>
+                        <p>Borrowing Records</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="welcome-box">
+                <h2>Welcome to Library Management System 👋</h2>
+                <p>
+                    Manage your library books, members, authors and
+                    borrowing history from one place.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- Books -->
+        <section id="books" class="section">
+
+            <div class="section-header">
+                <div>
+                    <h2>Books</h2>
+                    <p>Manage all library books</p>
+                </div>
+
+                <button class="primary-btn" onclick="openBookForm()">
+                    + Add Book
+                </button>
+            </div>
+
+            <div class="toolbar">
+
+                <input
+                    type="text"
+                    id="bookSearch"
+                    placeholder="Search title, author or ISBN..."
+                    oninput="loadBooks()"
+                >
+
+                <select id="bookAvailability" onchange="loadBooks()">
+                    <option value="">All Books</option>
+                    <option value="true">Available</option>
+                    <option value="false">Issued</option>
+                </select>
+
+            </div>
+
+            <div id="bookForm" class="form-box hidden">
+
+                <h3>Add Book</h3>
+
+                <input id="bookTitle" placeholder="Book title">
+                <input id="bookAuthor" placeholder="Author">
+                <input id="bookISBN" placeholder="ISBN">
+
+                <div>
+                    <button class="primary-btn" onclick="addBook()">Save Book</button>
+                    <button class="cancel-btn" onclick="closeBookForm()">Cancel</button>
+                </div>
+
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>ISBN</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="booksTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- Members -->
+        <section id="members" class="section">
+
+            <div class="section-header">
+                <div>
+                    <h2>Members</h2>
+                    <p>Manage library members</p>
+                </div>
+
+                <button class="primary-btn" onclick="openMemberForm()">
+                    + Add Member
+                </button>
+            </div>
+
+            <div class="toolbar">
+
+                <input
+                    type="text"
+                    id="memberSearch"
+                    placeholder="Search member..."
+                    oninput="loadMembers()"
+                >
+
+                <select id="membershipFilter" onchange="loadMembers()">
+                    <option value="">All Memberships</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Regular">Regular</option>
+                </select>
+
+            </div>
+
+            <div id="memberForm" class="form-box hidden">
+
+                <h3>Add Member</h3>
+
+                <input id="memberName" placeholder="Member name">
+                <input id="memberEmail" placeholder="Email">
+                <input id="memberPhone" placeholder="Phone">
+
+                <select id="memberType">
+                    <option value="">Select Membership</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Regular">Regular</option>
+                </select>
+
+                <div>
+                    <button class="primary-btn" onclick="addMember()">Save Member</button>
+                    <button class="cancel-btn" onclick="closeMemberForm()">Cancel</button>
+                </div>
+
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Membership</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="membersTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- Authors -->
+        <section id="authors" class="section">
+
+            <div class="section-header">
+                <div>
+                    <h2>Authors</h2>
+                    <p>Manage book authors</p>
+                </div>
+
+                <button class="primary-btn" onclick="openAuthorForm()">
+                    + Add Author
+                </button>
+            </div>
+
+            <div id="authorForm" class="form-box hidden">
+
+                <h3>Add Author</h3>
+
+                <input id="authorName" placeholder="Author name">
+                <input id="authorEmail" placeholder="Email">
+
+                <div>
+                    <button class="primary-btn" onclick="addAuthor()">Save Author</button>
+                    <button class="cancel-btn" onclick="closeAuthorForm()">Cancel</button>
+                </div>
+
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="authorsTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- Borrowing History -->
+        <section id="history" class="section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Borrowing History</h2>
+                    <p>Track issued and returned books</p>
+                </div>
+
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Book</th>
+                            <th>Member</th>
+                            <th>Issued At</th>
+                            <th>Returned At</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="historyTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+        </main>
+
+    <!-- Issue Book Modal -->
+    <div id="issueModal" class="modal hidden">
+
+        <div class="modal-content">
+
+            <h3>Issue Book</h3>
+
+            <p>Enter Member ID:</p>
+
+            <input
+                type="number"
+                id="issueMemberId"
+                placeholder="Member ID"
+                min="1"
+            >
+
+            <div>
+                <button class="primary-btn" onclick="confirmIssueBook()">
+                    Issue Book
+                </button>
+
+                <button class="cancel-btn" onclick="closeIssueModal()">
+                    Cancel
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+
+
+    
